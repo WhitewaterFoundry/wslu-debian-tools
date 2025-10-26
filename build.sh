@@ -74,7 +74,7 @@ case "$DISTRO" in
     ARCHITECTURE="amd64"
     ;;
   pengwin)
-    CODENAME="bullseye"
+    CODENAME="trixie"
     ARCHITECTURE="all"
     ;;
   *)
@@ -88,25 +88,25 @@ if [[ "${CI}" == "true" ]]; then
 else
     case $1 in
         dev)
-            VERSION="$(curl -s https://raw.githubusercontent.com/wslutilities/wslu/dev/master/VERSION | sed s/-/.d$(date +%s)-/g)"
+            VERSION="$(curl -s https://raw.githubusercontent.com/WhitewaterFoundry/wslu/dev/master/VERSION | sed s/-/.d$(date +%s)-/g)"
             tmp_version="$(echo "$VERSION" | sed s/-.*$//g)"
-            wget "https://github.com/wslutilities/wslu/archive/dev/master.tar.gz" -O "wslu-${tmp_version}.tar.gz"
+            wget "https://github.com/WhitewaterFoundry/wslu/archive/dev/master.tar.gz" -O "wslu-${tmp_version}.tar.gz"
             CHANGELOG="This is a dev build; Please check the dev/master branch to see the latest changes"
             ;;
         latest)
-            tmp_info="$(curl -s https://api.github.com/repos/wslutilities/wslu/releases/latest)"
+            tmp_info="$(curl -s https://api.github.com/repos/WhitewaterFoundry/wslu/releases/latest)"
             tmp_version="$(echo "$tmp_info" | grep -oP '"tag_name": "v\K(.*)(?=")')"
             CHANGELOG="$(echo "$tmp_info" | grep -oP '"body": "\K(.*)(?=")')"
             CHANGELOG="$(echo -e "$CHANGELOG" | sed -e "s/\r//g" -e "s/^\s*##.*$//g" -e "/^$/d" -e "s/^-/  -/g" -e "s/$/|/g")"
-            wget "https://github.com/wslutilities/wslu/archive/refs/tags/v${tmp_version}.tar.gz" -O "wslu-${tmp_version}.tar.gz"
-            VERSION="$(curl -s https://raw.githubusercontent.com/wslutilities/wslu/v"${tmp_version}"/VERSION)"
+            wget "https://github.com/WhitewaterFoundry/wslu/archive/refs/tags/v${tmp_version}.tar.gz" -O "wslu-${tmp_version}.tar.gz"
+            VERSION="$(curl -s https://raw.githubusercontent.com/WhitewaterFoundry/wslu/v"${tmp_version}"/VERSION)"
             ;;
         *)
-            tmp_info="$(curl -s https://api.github.com/repos/wslutilities/wslu/releases/tags/v${1})"
+            tmp_info="$(curl -s https://api.github.com/repos/WhitewaterFoundry/wslu/releases/tags/v${1})"
             CHANGELOG="$(echo "$tmp_info" | grep -oP '"body": "\K(.*)(?=")')"
             CHANGELOG="$(echo -e "$CHANGELOG" | sed -e "s/\r//g" -e "s/^\s*##.*$//g" -e "/^$/d" -e "s/^-/  -/g" -e "s/$/|/g")"
-            wget "https://github.com/wslutilities/wslu/archive/refs/tags/v${1}.tar.gz" -O "wslu-${1}.tar.gz"
-            VERSION="$(curl -s https://raw.githubusercontent.com/wslutilities/wslu/v${1}/VERSION)"
+            wget "https://github.com/WhitewaterFoundry/wslu/archive/refs/tags/v${1}.tar.gz" -O "wslu-${1}.tar.gz"
+            VERSION="$(curl -s https://raw.githubusercontent.com/WhitewaterFoundry/wslu/v${1}/VERSION)"
             ;;
     esac
 fi
